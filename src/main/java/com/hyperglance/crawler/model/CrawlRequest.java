@@ -7,7 +7,7 @@ import lombok.Data;
 @Builder
 public class CrawlRequest {
 
-    private String url;
-    private int depth;
+    private final String url;
+    private final int depth;
 
 }

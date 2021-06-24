@@ -6,6 +6,5 @@ public interface CachedMapRepository<S, T>{
 
     Map<S, T> get();
     void put(S key, T value);
-    void sync();
 
 }

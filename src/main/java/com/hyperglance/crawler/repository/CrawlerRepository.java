@@ -1,5 +1,7 @@
 package com.hyperglance.crawler.repository;
 
+import com.hyperglance.crawler.model.SyncRequest;
+import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Repository;
 
 import java.util.Collections;
@@ -23,7 +25,8 @@ public class CrawlerRepository implements CachedMapRepository<String, List<Strin
         cache.put(key, value);
     }
 
-    public void sync(){
-
+    @EventListener(SyncRequest.class)
+    private void sync(){
+        int x = 0;
     }
 }
