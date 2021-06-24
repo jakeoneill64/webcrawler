@@ -38,23 +38,29 @@ public class CrawlerServiceImpl implements CrawlerService{
         if(visitedUrls.contains(stripped))
             return;
         List<String> imageUrls = new LinkedList<>();
-
-        Document page = fetchDocument(stripped).orElseThrow(CrawlException::new);
+        Document page = fetchDocument(crawlRequest.getUrl()).orElseThrow(CrawlException::new);
         Elements images = page.select("img[src~=(?i)\\.(png|jpe?g|gif)]");
-        images.forEach(image -> imageUrls.add(image.attr("src")));
+        images.forEach(image -> {
+                    Optional<String> constructedImgUrl = urlConstructor
+                            .parse(new Tuple<>(stripped, image.attr("src")));
+                    constructedImgUrl.ifPresent(imageUrls::add);
+                });
         crawlerRepository.put(crawlRequest.getUrl(), imageUrls);
-
+        visitedUrls.add(stripped);
         if(crawlRequest.getDepth() < 1)
             return;
         Elements links = page.select("a[href]");
         links.forEach(link ->{
-            String url = urlConstructor.parse(
-                    new Tuple<>(stripped, link.attr("href"))
-            ).get();
+            Optional<String> url = urlConstructor.parse(
+                    new Tuple<>(crawlRequest.getUrl(), link.attr("href"))
+            );
+            if(url.isEmpty())
+                return;
+            System.out.println(url.get());
             crawl(CrawlRequest.builder()
                     .depth(crawlRequest.getDepth() - 1)
-                    .url(url)
-                    .build());}
+                    .url(url.get())
+                    .build(), visitedUrls);}
         );
     }
 
