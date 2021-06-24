@@ -12,6 +12,13 @@ public class UrlStripper implements Parser<Optional<String>, String> {
     private final String URL_WITH_QUERY_PATTERN = "(https?:\\/\\/.+?)([?#])";
     private final String URL_BASIC_PATTERN = "(https?:\\/\\/.+)";
 
+    /**Remove queries and page references
+     * from the url to leave only the host
+     * and resource path
+     *
+     * @param raw
+     * @return
+     */
     @Override
     public Optional<String> parse(String raw) {
         Matcher urlWithQueryMatcher =

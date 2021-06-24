@@ -22,12 +22,11 @@ public class CrawlerController {
 
     private final CrawlerRepository crawlerRepository;
     private final CrawlerService crawlerService;
-    private final ExecutorService executorService;
     private final ApplicationEventPublisher applicationEventPublisher;
 
     @PostMapping("crawl")
     public void crawl(@RequestBody @Validated CrawlRequest request){
-        executorService.submit(() -> crawlerService.crawl(request));
+        crawlerService.crawl(request);
     }
 
     @GetMapping("inventory")

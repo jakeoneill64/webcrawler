@@ -12,6 +12,13 @@ public class UrlConstructor implements Parser<Optional<String>, Tuple<String, St
 
     private final String URL_BASE_SCRAPPER = "(https?:\\/\\/.+?)\\/";
 
+
+    /**Create a full url from the base url
+     * and the partial url from href / src tags
+     *
+     * @param raw
+     * @return
+     */
     @Override
     public Optional<String> parse(Tuple<String, String> raw) {
         Matcher baseMatcher = Pattern.compile(URL_BASE_SCRAPPER).matcher(raw.getOne());
